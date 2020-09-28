@@ -6,7 +6,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,19 +17,18 @@ import java.util.UUID;
 public class JsonResource {
 
     @GET
-    @Path("/CreateOrderCommand")
-    public OrderInCommand createOrderCommand() {
+    @Path("/NewOrderEvent")
+    public NewOrderEvent createOrderCommand() {
         return mockCreateOrderCommand();
     }
 
-    private OrderInCommand mockCreateOrderCommand() {
+    private NewOrderEvent mockCreateOrderCommand() {
 
-        OrderInCommand orderInCommand = new OrderInCommand();
-        orderInCommand.setOrderSource(OrderSource.DELIVERY);
-        orderInCommand.beverages = mockBeverages();
-        orderInCommand.kitchenOrders = mockKitchenOrder();
-        orderInCommand.id = UUID.randomUUID().toString();
-        return orderInCommand;
+        NewOrderEvent newOrderEvent = new NewOrderEvent();
+        newOrderEvent.setOrderSource(OrderSource.DELIVERY);
+        newOrderEvent.setBaristaItems(mockBeverages());
+        newOrderEvent.setKitchenItems(mockKitchenOrder());
+        return newOrderEvent;
 
     }
 
@@ -82,18 +83,18 @@ public class JsonResource {
                 "Barista Joe"));
     }
 
-    private List<LineItem> mockKitchenOrder() {
-
-        return Arrays.asList(
-                new LineItem((Item.CAKEPOP), "Winnie"),
-                new LineItem(Item.CROISSANT, "Eeyore"));
+    private HashMap<String, MenuItem> mockKitchenOrder() {
+        return new HashMap<>(){{
+            put("Mickey", new MenuItem(Item.CAKEPOP, BigDecimal.valueOf(3.50)));
+            put("Miniie", new MenuItem(Item.MUFFIN, BigDecimal.valueOf(3)));
+        }};
     }
 
-    private List<LineItem> mockBeverages() {
-
-        return Arrays.asList(
-                new LineItem(Item.COFFEE_BLACK, "Winnie"),
-                new LineItem(Item.ESPRESSO, "Eeyore"));
+    private HashMap<String,MenuItem> mockBeverages() {
+        return new HashMap<>(){{
+            put("Mickey", new MenuItem(Item.COFFEE_BLACK, BigDecimal.valueOf(2.50)));
+            put("Miniie", new MenuItem(Item.ESPRESSO, BigDecimal.valueOf(3)));
+        }};
     }
 
 }
