@@ -1,8 +1,7 @@
 package com.redhat.examples;
 
-import com.redhat.quarkus.cafe.domain.Item;
-import com.redhat.quarkus.cafe.domain.LineItem;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkuscoffeeshop.domain.Item;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
